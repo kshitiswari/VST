@@ -26,6 +26,11 @@
         <value>employee.hbm.xml</value>  
         </list>  
         </property>   -->
+        <property name="packagesToScan">
+        <list>
+            <value>com.webschool.vst.model</value>
+        </list>
+    </property>
           
         <property name="hibernateProperties">  
             <props>  
@@ -44,12 +49,12 @@
 	</property>
 </bean>
       
-    <bean id="template" class="org.springframework.orm.hibernate3.HibernateTemplate">  
+    <bean id="vsttemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">  
     <property name="sessionFactory" ref="vstsessionFactory"></property>  
     </bean>  
       
     <bean id="d" class="com.webschool.vst.dao.Test" scope="session">  
-    <property name="template" ref="template"></property>  
+    <property name="template" ref="vsttemplate"></property>  
     </bean>  
 	
 	
@@ -57,5 +62,13 @@
         <property name="prefix" value="/WEB-INF/jsp/" />  
         <property name="suffix" value=".jsp" />  
     </bean>  
+    
+    <!-- DAO Bean Definitions -->
+    <bean id="menuDAO" class="com.webschool.vst.dao.MenuDAOImpl" p:template="vsttemplate"/>
+   
+    
+    
+    <!-- End of DAO Bean Definitions -->
+    
     
 </beans>
