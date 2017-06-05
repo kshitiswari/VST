@@ -20,8 +20,9 @@ public class MenuDAOImpl implements MenuDAOInteface{
 			SessionFactory factory=template.getSessionFactory();
 			Session ses=factory.openSession();
 			Query query=ses.createSQLQuery(DBQuery.create_menu_string);
-			query.setParameter(0, roleid);
-			List<MenuItem> menuList=query.list();
+			//query.setParameter(0, roleid);
+			
+			List<MenuItem> menuList=(List<MenuItem>)query.list();
 			
 			for(MenuItem m:menuList){
 				System.out.println(m);
@@ -32,6 +33,10 @@ public class MenuDAOImpl implements MenuDAOInteface{
 		
 		
 		return menuString;
+	}
+
+	public HibernateTemplate getTemplate() {
+		return template;
 	}
 
 	public void setTemplate(HibernateTemplate template) {

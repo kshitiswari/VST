@@ -34,7 +34,7 @@
           
         <property name="hibernateProperties">  
             <props>  
-                <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>  
+                <prop key="hibernate.dialect">${jdbc.dialect}</prop> 
                 <prop key="hibernate.hbm2ddl.auto">update</prop>  
                 <prop key="hibernate.show_sql">true</prop>  
                   
@@ -64,7 +64,9 @@
     </bean>  
     
     <!-- DAO Bean Definitions -->
-    <bean id="menuDAO" class="com.webschool.vst.dao.MenuDAOImpl" p:template="vsttemplate"/>
+    <bean id="menuDAO" class="com.webschool.vst.dao.MenuDAOImpl">
+    <property name="template" ref="vsttemplate"></property> 
+    </bean>
    
     
     
