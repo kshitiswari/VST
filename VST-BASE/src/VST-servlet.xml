@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<context:component-scan base-package="com.webschool.vst.controller"/>
+	<!-- Use @Controller annotations for MVC controller definitions -->
+		<mvc:annotation-driven />
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">  
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+    </bean>  
+      
+    <bean id="vstsessionFactory"  class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource"></property>  
+          
+       <!--  LocalSessionFactoryBean
+       <property name="mappingResources">  
+        <list>  
+        <value>employee.hbm.xml</value>  
+        </list>  
+        </property>   -->
+        <property name="packagesToScan">
+        <list>
+            <value>com.webschool.vst.model</value>
+        </list>
+    </property>
+          
+        <property name="hibernateProperties">  
+            <props>  
+                <prop key="hibernate.dialect">${jdbc.dialect}</prop> 
+                <prop key="hibernate.hbm2ddl.auto">update</prop>  
+                <prop key="hibernate.show_sql">true</prop>  
+                  
+            </props>  
+        </property>  
+    </bean>  
+    <bean
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+	<property name="location">
+		<value>classpath:database.properties</value>
+	</property>
+</bean>
+      
+    <bean id="vsttemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">  
+    <property name="sessionFactory" ref="vstsessionFactory"></property>  
+    </bean>  
+      
+    <bean id="d" class="com.webschool.vst.dao.Test" scope="session">  
+    <property name="template" ref="vsttemplate"></property>  
+    </bean>  
+	
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <property name="prefix" value="/WEB-INF/jsp/" />  
+        <property name="suffix" value=".jsp" />  
+    </bean>  
+    <bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:url"/>
+		<!-- <property name="basename">
+			<value>classpath:url</value>
+		</property> -->
+	</bean>
+    <!-- DAO Bean Definitions -->
+    <bean id="menuDAO" class="com.webschool.vst.dao.MenuDAOImpl">
+    <property name="template" ref="vsttemplate"></property> 
+    <property name="message" ref="messageSource"></property>  
+    
+    </bean>
+   
+    <bean id="LoginDAO" class="com.webschool.vst.dao.LoginDAOImpl">
+    <property name="template" ref="vsttemplate"></property> 
+    </bean>
+    
+    <bean id="LoginService" class="com.webschool.vst.service.LoginServiceImpl">
+    <property name="loginDAO" ref="LoginDAO"></property> 
+    </bean>
+    <bean id="CourseDAO" class="com.webschool.vst.dao.CourseDAOImpl">
+    <property name="template" ref="vsttemplate"></property> 
+    </bean>
+    
+    <bean id="CourseService" class="com.webschool.vst.service.CourseServiceImpl">
+    <property name="courseDAO" ref="CourseDAO"></property> 
+    </bean>
+    
+    <!-- End of DAO Bean Definitions -->
+    
+    
+</beans>
