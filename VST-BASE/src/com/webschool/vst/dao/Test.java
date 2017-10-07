@@ -3,6 +3,8 @@ package com.webschool.vst.dao;
 import java.io.Serializable;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -33,9 +35,12 @@ public class Test implements Serializable{
 		
 		
 		//}
+		ApplicationContext context  = new ClassPathXmlApplicationContext("VST-servlet.xml");
+		ReloadableResourceBundleMessageSource message=(ReloadableResourceBundleMessageSource)context.getBean("messageSource");
 		MenuDAOImpl dl= new MenuDAOImpl();
 		dl.setTemplate(template);
-		dl.buildMenuString(4);
+		dl.setMessage(message);
+		dl.buildMenuString(1);
 		return "inside MenuDAOImpl";
 		
 	}
