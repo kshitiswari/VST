@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
 	<context:component-scan base-package="com.webschool.vst.controller"/>
-	
+	<mvc:annotation-driven />
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">  
         <property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
@@ -62,15 +62,54 @@
         <property name="prefix" value="/WEB-INF/jsp/" />  
         <property name="suffix" value=".jsp" />  
     </bean>  
-    
+    <bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:url"/>
+		<!-- <property name="basename">
+			<value>classpath:url</value>
+		</property> -->
+	</bean>
     <!-- DAO Bean Definitions -->
     <bean id="menuDAO" class="com.webschool.vst.dao.MenuDAOImpl">
     <property name="template" ref="vsttemplate"></property> 
+    <property name="message" ref="messageSource"></property>  
+    
     </bean>
    
+    <bean id="LoginDAO" class="com.webschool.vst.dao.LoginDAOImpl">
+    <property name="template" ref="vsttemplate"></property> 
+    </bean>
     
+    <bean id="LoginService" class="com.webschool.vst.service.LoginServiceImpl">
+    <property name="loginDAO" ref="LoginDAO"></property> 
+    </bean>
+    <bean id="CourseDAO" class="com.webschool.vst.dao.CourseDAOImpl">
+    <property name="template" ref="vsttemplate"></property> 
+    </bean>
     
+    <bean id="CourseService" class="com.webschool.vst.service.CourseServiceImpl">
+    <property name="courseDAO" ref="CourseDAO"></property> 
+    </bean>
+    
+    <bean id="StudentDAO" class="com.webschool.vst.dao.StudentDAOImpl">
+    <property name="template" ref="vsttemplate"></property> 
+    </bean>
+    
+    <bean id="StudentService" class="com.webschool.vst.service.StudentServiceImpl">
+    <property name="studentDAO" ref="StudentDAO"></property> 
+    </bean>
+  <!--   
+    <bean id="StudentRegisterDAO" class="com.webschool.vst.dao.StudentRegisterDAOImpl">
+    <property name="template" ref="vsttemplate"></property> 
+    </bean>
+    
+    <bean id="StudentRegisterService" class="com.webschool.vst.service.StudentRegisterServiceImpl">
+    <property name="studentregisterDAO" ref="StudentRegisterDAO"></property> 
+    </bean> -->
+
     <!-- End of DAO Bean Definitions -->
     
-    
+    <mvc:resources mapping="/resources/**" location="/resources/"
+    cache-period="31556926"/>
+    <mvc:annotation-driven />
 </beans>

@@ -1,6 +1,7 @@
 package com.webschool.vst.dao;
 
 import org.apache.log4j.Logger;
+import org.hibernate.sql.Template;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -31,7 +32,14 @@ public class LoginDAOImpl implements LoginDAO {
 	}
 
 	public LoginModel login(String userid) {
-		return template.get(LoginModel.class, userid);
+		LoginModel user=null;
+		user=template.get(com.webschool.vst.model.LoginModel.class, userid);
+		
+		//user= template.load(com.webschool.vst.model.LoginModel.class, userid);
+		
+		//user=template.find("from ")
+		
+		return user;
 	}
 	
 

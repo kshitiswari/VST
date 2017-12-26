@@ -1,5 +1,8 @@
 package com.webschool.vst.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,16 +30,25 @@ public class LoginController {
 	}  
 	
 	@RequestMapping("/login")
-	public ModelAndView login(LoginModel user) { 
+	public ModelAndView login(HttpServletRequest request,LoginModel user) { 
+		 ModelAndView mav=null;
+		
 		 LoginModel userdataFromDB=loginService.login(user.getUserid());
 		 if(userdataFromDB!=null){
-			 if(user.getPassword().equals(userdataFromDB.getPassword()))
-				 return new ModelAndView("testsuccess", "message", "User Found");
+			 if(user.getPassword().equals(userdataFromDB.getPassword())){
+				 
+				 mav= new ModelAndView("index", "user", userdataFromDB);
+				 HttpSession session=request.getSession();
+				 session.setAttribute("USER", userdataFromDB);
+				 
+			 }
 			 else
-				 return new ModelAndView("testfail", "message", "UserId or Password invalid!");
+				 mav= new ModelAndView("Failure", "message", "UserId or Password invalid!");
 			 
 		 }else
-			 return new ModelAndView("testfail", "message", "User Does not exist!");
+			 mav= new ModelAndView("Failure", "message", "User Does not exist!");
+		 
+		 return mav;
     }
 	
 	

@@ -17,9 +17,9 @@ public class StudentDAOImpl implements StudentDAO{
 		 Test Data
 		 */
 		
-		student.setStudentid("s100");
+		//student.setStudentid("s100");
 		//student.setFirstname("Deb");
-		student.setStudentName();
+		//student.setStudentName();
 		// test data end
 		try{
 		template.save(student);

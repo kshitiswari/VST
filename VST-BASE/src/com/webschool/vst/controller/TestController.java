@@ -9,6 +9,7 @@ public class TestController {
 	
 	@RequestMapping("/test")
 	public ModelAndView helloWorld() {  
+		// dummy comment
         String message = "HELLO SPRING MVC HOW R U";  
         return new ModelAndView("test", "message", message);  
     }  
